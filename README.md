@@ -47,11 +47,12 @@ Este projeto está alinhado com o 4º Objetivo de Desenvolvimento Sustentável d
 
 
 IMAGENS DO SISTEMA (Preview)
-<img width="890" height="746" alt="Captura de tela 2025-08-13 210234" src="https://github.com/user-attachments/assets/60f84373-499f-404c-91ae-dc077db36b64" />
-<img width="903" height="643" alt="Captura de tela 2025-08-13 210202" src="https://github.com/user-attachments/assets/c0f5a128-e82f-4a38-8e33-59532fe59bf3" />
-<img width="1873" height="920" alt="Captura de tela 2025-08-13 210152" src="https://github.com/user-attachments/assets/ec4710ae-cbe0-4dd5-9c70-91cd82d8a842" />
-<img width="754" height="529" alt="Captura de tela 2025-08-13 210140" src="https://github.com/user-attachments/assets/d231cf10-dc29-4bb3-a777-3ffa4cfa74a5" />
-<img width="1860" height="662" alt="Captura de tela 2025-08-13 210402" src="https://github.com/user-attachments/assets/cd8caaa5-a247-4352-8bc8-73fe44414a34" />
+<img width="754" height="529" alt="Captura de tela 2025-08-13 210140" src="https://github.com/user-attachments/assets/d62220f6-d7fd-4beb-8242-5d600a912f27" />
+<img width="1873" height="920" alt="Captura de tela 2025-08-13 210152" src="https://github.com/user-attachments/assets/31f124db-91dd-49fb-ac04-06ec071d87c8" />
+<img width="903" height="643" alt="Captura de tela 2025-08-13 210202" src="https://github.com/user-attachments/assets/def20b6a-e333-4a2b-accc-1c96b9e82221" />
+<img width="890" height="746" alt="Captura de tela 2025-08-13 210234" src="https://github.com/user-attachments/assets/bfe55a00-1458-4eb6-acdf-d927c18b072d" />
+<img width="1860" height="662" alt="Captura de tela 2025-08-13 210402" src="https://github.com/user-attachments/assets/cdc350c5-9057-4913-93ea-f730e36457fd" />
+
 
 
 
