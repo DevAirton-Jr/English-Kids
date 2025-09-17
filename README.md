@@ -54,6 +54,4 @@ IMAGENS DO SISTEMA (Preview)
 <img width="1860" height="662" alt="Captura de tela 2025-08-13 210402" src="https://github.com/user-attachments/assets/cdc350c5-9057-4913-93ea-f730e36457fd" />
 
 
-
-
 Desenvolvido por Airton Jr como projeto acadêmico na Uninter - 2025
