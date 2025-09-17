@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>English Kids — Plataforma Completa</title>
+<link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div id="app-root">
+  <!-- Tela de login/cadastro (visível inicialmente) -->
+  <div id="loginView" class="view card center">
+    <h2>English Kids</h2>
+    <p class="muted">Aprenda inglês brincando — para idades 6–10</p>
+    <div class="tabs">
+      <button id="tabSignIn" class="pill active">Entrar</button>
+      <button id="tabSignUp" class="pill">Cadastrar</button>
+    </div>
+
+    <form id="signinForm" class="form">
+      <label>Email<input id="signinEmail" type="email" placeholder="Seu email"></label>
+      <label>Senha<input id="signinPassword" type="password" placeholder="Sua senha"></label>
+      <label>Perfil<select id="signinRole"><option value="student">Aluno</option><option value="teacher">Professor</option></select></label>
+      <div class="row">
+        <button id="btnSignIn" class="btn">Entrar</button>
+      </div>
+    </form>
+
+    <form id="signupForm" class="form" style="display:none">
+      <label>Nome<input id="signupName" placeholder="Nome completo"></label>
+      <label>Email<input id="signupEmail" type="email" placeholder="Seu email"></label>
+      <label>Senha<input id="signupPassword" type="password" placeholder="Senha (mín. 6 caracteres)"></label>
+      <label>Data de nascimento<input id="signupDob" type="date"></label>
+      <label>Perfil<select id="signupRole"><option value="student">Aluno</option><option value="teacher">Professor</option></select></label>
+      <label>Foto<input id="signupPhoto" type="file" accept="image/*"></label>
+      <div class="row">
+        <button id="btnSignUp" class="btn">Criar Conta</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Aplicação principal (oculta inicialmente) -->
+  <div id="app" style="display:none">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🟠</div>
+        <div>
+          <div class="title">English Kids</div>
+          <div class="subtitle muted">Inglês divertido para crianças</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="navbtn active" data-view="home">Início</button>
+        <button class="navbtn" data-view="lessons">Aulas</button>
+        <button class="navbtn" data-view="games">Jogos</button>
+        <button class="navbtn" data-view="classes" id="navClasses" style="display:none">Turmas</button>
+        <button class="navbtn" data-view="profile">Perfil</button>
+        <button class="navbtn" data-view="about">Sobre</button>
+      </nav>
+    </header>
+
+    <main class="mainwrap">
+      <aside class="sidebar card">
+        <div class="usercard">
+          <div class="avatar" id="profileAvatar">👦</div>
+          <div>
+            <div id="userName">—</div>
+            <div class="muted" id="userRole">—</div>
+          </div>
+        </div>
+        <div class="progress mini card">
+          <div><strong>Progresso</strong></div>
+          <div id="starsCount">🌟 0</div>
+          <div class="muted">XP: <span id="xpCount">0</span></div>
+          <div style="margin-top:8px"><button id="logoutBtn" class="small secondary">Sair</button></div>
+        </div>
+        <div class="tip card">
+          <strong></strong>
+          <p id="sideTip"></p>
+        </div>
+      </aside>
+
+      <section class="content">
+        <!-- Seções dinâmicas da aplicação -->
+        <section id="view_home" class="view card">
+          <div class="hero">
+            <div class="hero-left">
+              <div class="hero-emoji" id="heroEmoji">🐱</div>
+              <div>
+                <h2>Bem-vindo(a) ao English Kids!</h2>
+                <p class="muted">Aprenda vocabulário e frases com lições e jogos.</p>
+                <div class="row">
+                  <button id="gotoLessons" class="btn">Ver Aulas</button>
+                  <button id="gotoGames" class="btn secondary">Jogar</button>
+                </div>
+              </div>
+            </div>
+            <div class="hero-right">
+              <div class="card small">
+                <div><strong>Missão</strong></div>
+                <div class="muted">Complete 1 lição e 2 jogos hoje</div>
+                <div class="mission-progress" id="missionProgress">0/3</div>
+              </div>
+              <div class="card small">
+                <strong>Dica rápida</strong>
+                <p class="muted">Clique nas palavras para estudar e depois faça o exercício.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lessons-preview" id="recentLessons"></div>
+        </section>
+
+        <section id="view_lessons" class="view card" style="display:none">
+          <h2>Catálogo de Aulas</h2>
+          <div id="lessonList" class="lessonlist"></div>
+          <div id="lessonContent" style="margin-top:12px"></div>
+        </section>
+
+        <section id="view_games" class="view card" style="display:none">
+          <h2>Jogos</h2>
+          <div id="gamesList" class="gamesgrid"></div>
+          <div id="gameArea" style="margin-top:12px"></div>
+        </section>
+
+        <section id="view_classes" class="view card" style="display:none">
+          <h2>Gerenciar Turmas</h2>
+          <div class="card" style="margin-bottom:12px">
+            <h3>Criar nova turma</h3>
+            <div class="form" id="createClassForm">
+              <label>Nome da turma<input id="newClassName" placeholder="Ex: Turma A - 2º ano"></label>
+              <label>Nível
+                <select id="newClassLevel">
+                  <option value="Basico">Básico</option>
+                  <option value="Intermediario">Intermediário</option>
+                  <option value="Avancado">Avançado</option>
+                </select>
+              </label>
+              <div class="row">
+                <button id="createClassBtn" class="btn">Criar Turma</button>
+              </div>
+            </div>
+          </div>
+          <div id="classesList"></div>
+          <div id="classDetail" style="margin-top:12px"></div>
+        </section>
+
+        <section id="view_profile" class="view card" style="display:none">
+          <h2>Perfil</h2>
+          <form id="profileForm">
+            <label>Nome<input id="profileName"></label>
+            <label>Data de nascimento<input id="profileDob" type="date"></label>
+            <label>Hobbies<input id="profileHobbies" placeholder="Ex: Desenhar, futebol"></label>
+            <label>Bio<textarea id="profileBio" rows="3"></textarea></label>
+            <label>Foto<input id="profilePhoto" type="file" accept="image/*"></label>
+            <div class="row">
+              <button id="saveProfile" class="btn">Salvar</button>
+              <button id="resetProgress" type="button" class="btn secondary">Resetar Progresso</button>
+            </div>
+          </form>
+          <div id="profilePreview" style="margin-top:12px"></div>
+        </section>
+
+        <section id="view_about" class="view card" style="display:none">
+          <h2>Sobre</h2>
+          <p><strong>Objetivo:</strong> Nossa plataforma de ensino de inglês foi desenvolvida especialmente para crianças de 6 a 10 anos, oferecendo um ambiente interativo, educativo e seguro. Com um design intuitivo e colorido, o sistema permite que alunos e professores acompanhem o progresso de forma prática, por meio de painéis personalizados e atividades gamificadas.
+
+O aprendizado é reforçado com jogos interativos, exercícios personalizados e conteúdos adaptados, estimulando a curiosidade, o raciocínio e a prática constante do inglês de maneira divertida. Além disso, a plataforma prioriza acessibilidade e inclusão, garantindo que todos os alunos possam aprender com conforto e autonomia.</p>
+          <p>Como usar: crie um perfil, escolha uma lição, pratique as palavras e complete os exercícios. Os jogos reforçam o aprendizado.</p>
+        </section>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer class="footer muted">Desenvolvido por Airton Jr</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
